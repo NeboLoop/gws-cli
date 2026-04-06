@@ -31,6 +31,8 @@ pub enum OutputFormat {
     Yaml,
     /// Comma-separated values.
     Csv,
+    /// Plain text (used by helpers like +read that produce human-readable output).
+    Text,
 }
 
 impl OutputFormat {
@@ -45,6 +47,7 @@ impl OutputFormat {
             "table" => Ok(Self::Table),
             "yaml" | "yml" => Ok(Self::Yaml),
             "csv" => Ok(Self::Csv),
+            "text" | "txt" => Ok(Self::Text),
             other => Err(other.to_string()),
         }
     }
@@ -64,6 +67,9 @@ pub fn format_value(value: &Value, format: &OutputFormat) -> String {
         OutputFormat::Table => format_table(value),
         OutputFormat::Yaml => format_yaml(value),
         OutputFormat::Csv => format_csv(value),
+        // Text falls back to JSON for generic API responses; helpers like
+        // +read handle Text themselves before reaching this function.
+        OutputFormat::Text => serde_json::to_string_pretty(value).unwrap_or_default(),
     }
 }
 
@@ -78,7 +84,7 @@ pub fn format_value(value: &Value, format: &OutputFormat) -> String {
 /// combined stream is a valid YAML multi-document file.
 pub fn format_value_paginated(value: &Value, format: &OutputFormat, is_first_page: bool) -> String {
     match format {
-        OutputFormat::Json => serde_json::to_string(value).unwrap_or_default(),
+        OutputFormat::Json | OutputFormat::Text => serde_json::to_string(value).unwrap_or_default(),
         OutputFormat::Csv => format_csv_page(value, is_first_page),
         OutputFormat::Table => format_table_page(value, is_first_page),
         // Prefix every page with a YAML document separator so that the
