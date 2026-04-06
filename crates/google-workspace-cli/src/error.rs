@@ -67,7 +67,7 @@ pub fn print_error_json(err: &GwsError) {
     let json = err.to_json();
     println!(
         "{}",
-        serde_json::to_string_pretty(&json).unwrap_or_default()
+        serde_json::to_string(&json).unwrap_or_default()
     );
 
     // Print a colored summary to stderr. For accessNotConfigured errors,
