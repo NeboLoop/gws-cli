@@ -2,13 +2,18 @@
 name: gws-gmail
 description: "Gmail: Send, read, and manage email."
 metadata:
-  version: 0.22.5
+  version: 0.22.3
   openclaw:
     category: "productivity"
     requires:
       bins:
         - gws
     cliHelp: "gws gmail --help"
+triggers:
+  - gmail
+  - email
+  - inbox
+  - mail
 ---
 
 # gmail (v1)
@@ -30,6 +35,16 @@ gws gmail <resource> <method> [flags]
 | [`+forward`](../gws-gmail-forward/SKILL.md) | Forward a message to new recipients |
 | [`+read`](../gws-gmail-read/SKILL.md) | Read a message and extract its body or headers |
 | [`+watch`](../gws-gmail-watch/SKILL.md) | Watch for new emails and stream them as NDJSON |
+
+### Management Skills
+
+| Skill | Description |
+|-------|-------------|
+| [`gws-gmail-batch`](../gws-gmail-batch/SKILL.md) | Bulk modify or delete up to 1000 messages |
+| [`gws-gmail-manage`](../gws-gmail-manage/SKILL.md) | Mark read/unread, star, trash, delete individual messages |
+| [`gws-gmail-threads`](../gws-gmail-threads/SKILL.md) | Thread-level list, get, modify labels, trash, delete |
+| [`gws-gmail-labels`](../gws-gmail-labels/SKILL.md) | Create, list, update, and delete labels |
+| [`gws-gmail-drafts`](../gws-gmail-drafts/SKILL.md) | Create, update, list, send, and delete drafts |
 
 ## API Resources
 
